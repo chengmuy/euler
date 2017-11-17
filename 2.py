@@ -1,12 +1,9 @@
-a = 1
-b = 2
-lim = 4 * 10**6
-sum = 0
+def even_fib(limit):
+    a = 1
+    b = 2
+    while (a < limit):
+        if not a % 2:
+            yield a
+        a, b = b, a+b
 
-while b < lim:
-    if not b % 2:
-        sum += b
-
-    a, b = b, a+b
-
-print(sum)
+print(sum(even_fib(4 * 10**6)))
