@@ -1,5 +1,4 @@
 from collections import defaultdict
-from collections import OrderedDict
 import itertools as it
 
 def primeFactorize(n):
@@ -36,13 +35,20 @@ def isPrime(n):
             return False
     return True
 
-def generatePrimesErat(n):
+def generatePrimesDivTest():
+    for i in it.count(2):
+        if isPrime(i):
+            yield i
+
+def generatePrimesErat():
     primes = defaultdict(int)
 
     yield 2
     primes[2] = 4
     yield 3
     primes[3] = 6
+
+    ct = 2
 
     for i in it.count(4):
         isPrime = True
@@ -54,4 +60,41 @@ def generatePrimesErat(n):
         if isPrime:
             primes[i] = i
             yield i
-        # print(primes)
+
+
+def generatePrimesErat2():
+    primes = defaultdict(int)
+
+    yield 2
+    primes[2] = 4
+    yield 3
+    primes[3] = 9
+
+    for i in it.count(5, 2):
+        isPrime = True
+        for p, val in primes.items():
+            if val == i:
+                isPrime = False
+            if val < i:
+                primes[p] += 2*p
+        if isPrime:
+            primes[i] = i**2
+            yield i
+
+def generatePrimesErat3():
+    primes = defaultdict(int)
+    yield 2
+    yield 3
+    primes[9] = 3
+
+    for i in it.count(5, 2):
+        basePrime = primes.pop(i, None)
+
+        if basePrime: # i is composite
+            next = i + 2 * basePrime
+            while next in primes:
+                next += 2 * basePrime
+            primes[next] = basePrime
+        else: # i is prime
+            yield i
+            primes[i**2] = i
